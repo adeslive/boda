@@ -1,0 +1,174 @@
+:root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --color-bg: #f4efe3;
+
+    --img-width: 1920px;
+    --img-height: 220px;
+    --time: 120s;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --time: 80s;
+        /* same visual speed on a smaller image */
+    }
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    color: #444;
+    font-family: sans-serif;
+}
+
+canvas {
+    max-width: 94%;
+    cursor: pointer;
+    z-index: 1;
+}
+
+p {
+    font-size: 18px;
+    margin-top: 8px;
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+dialog {
+    width: 80vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0 auto;
+    padding: 0;
+    border: 3px solid #555;
+    border-radius: 4px;
+    background: var(--color-bg);
+    overflow: hidden;
+    z-index: 99;
+}
+
+dialog::backdrop {
+    background: rgba(40, 35, 30, .55);
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--color-bg);
+    display: block;
+}
+
+button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 6px 14px;
+    font-size: 16px;
+    border: 2px solid #555;
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: #444;
+    cursor: pointer;
+}
+
+.patron-container {
+    position: fixed;
+    top: 0;
+    /* Asegura que empiece arriba */
+    left: 0;
+    /* Asegura que empiece a la izquierda */
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.patron-row {
+    z-index: -1;
+    flex: 1;
+    width: 100%;
+    max-height: 100%;
+    background-image: url('./res/public/hearts_strip.png');
+    background-repeat: repeat-x;
+    opacity: 0.5;
+    aspect-ratio: calc(var(--img-height) * (var(--img-width) / var(--img-height)));;
+    background-size: var(--img-width) 100%;
+    /* Centramos verticalmente la tira de imágenes dentro de la fila */
+    background-position: 0 center;
+    background-blend-mode: color;
+    image-rendering: optimizeQuality;
+}
+
+dialog[open] {
+    animation: pop .35s ease-out;
+}
+
+@keyframes pulse {
+    50% {
+        transform: scale(1.08);
+        opacity: .6;
+    }
+}
+
+@keyframes pop {
+    from {
+        transform: scale(.9) translateY(30px);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    p,
+    dialog[open],
+    .patron-row {
+        /* También frena el fondo si el usuario prefiere sin movimiento */
+        animation: none;
+    }
+}
+
+@media (max-width:600px) {
+    dialog {
+        width: 100vw;
+    }
+}
+
+/* --- CONFIGURACIÓN DE LAS ANIMACIONES ALTERNAS --- */
+.patron-row:nth-child(odd) {
+    animation: moveLeft var(--time) linear infinite;
+}
+
+.patron-row:nth-child(even) {
+    animation: moveRight var(--time) linear infinite;
+}
+
+/* Animación puramente horizontal hacia la IZQUIERDA */
+@keyframes moveLeft {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        /* Valor negativo para desplazar hacia la izquierda de forma limpia */
+        background-position-x: calc(-1 * var(--img-width));
+    }
+}
+
+/* Animación puramente horizontal hacia la DERECHA */
+@keyframes moveRight {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: var(--img-width);
+    }
+}
