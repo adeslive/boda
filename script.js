@@ -99,11 +99,18 @@ function draw() {
         g.bezierCurveTo(pt[0] - 28, y - 22, pt[0] - 8, y - 28, pt[0], y - 15);
         g.bezierCurveTo(pt[0] + 8, y - 28, pt[0] + 28, y - 22, pt[0], y + 6);
         g.closePath();
-        g.fillStyle = "rgba(210,70,80,.50)"; g.fill();
+        g.fillStyle = "rgba(210,70,80,.50)"; 
+        g.fill();
+        g.restore();
 
-        g.strokeStyle = "rgba(60,60,65,.85)"; g.lineWidth = 2;
-        g.beginPath(); g.moveTo(cx, y + 6); g.bezierCurveTo(cx - 28, y - 22, cx - 4, y - 28, cx, y - 12);
-        g.bezierCurveTo(cx + 4, y - 28, cx + 28, y - 22, cx, y + 6); g.stroke();
+        g.strokeStyle = "rgba(60,60,65,.85)"; 
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(pt[0], y + 6);
+        g.bezierCurveTo(pt[0] - 28, y - 22, pt[0] - 8, y - 28, pt[0], y - 15);
+        g.bezierCurveTo(pt[0] + 8, y - 28, pt[0] + 28, y - 22, pt[0], y + 6);
+        g.closePath();
+        g.stroke();
         g.restore();
     }
 
